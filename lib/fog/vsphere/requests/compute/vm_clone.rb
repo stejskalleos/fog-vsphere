@@ -190,7 +190,6 @@ module Fog
           virtual_machine_config_spec.extraConfig = extra_config(extra_config: options['extraConfig']) if options.key?('extraConfig')
 
           boot_options = {}
-
           if @vsphere_rev.to_f >= 5 && options.key?('boot_order')
             boot_order = options['boot_order'].flat_map do |boot_device|
               case boot_device.to_sym
@@ -225,7 +224,7 @@ module Fog
           end
 
           boot_options[:efiSecureBootEnabled] = options["secure_boot"] if options.key?("secure_boot")
-          virtual_machine_config_spec.bootOptions = boot_options
+          virtual_machine_config_spec.bootOptions = boot_options if boot_options.any?
 
           # Options['customization_spec']
           # OLD Options still supported
