@@ -1,6 +1,8 @@
 Shindo.tests('Fog::Compute[:vsphere] | server model', ['vsphere']) do
   servers = Fog::Compute[:vsphere].servers
-  server = servers.last
+  # Stable mock fixture — avoid servers.last, which after vm_clone/vm_power_off request tests can be a
+  # newly-added clone inheriting poweredOff from its template (order-dependent failure on CI).
+  server = servers.get('5029c440-85ee-c2a1-e9dd-b63e39364603')
 
   tests('The server model should') do
     tests('have the action') do
